@@ -7,7 +7,7 @@
 
 
         {{-- Filters Form --}}
-        <form method="GET" action="{{ route('products.index') }}" class="mb-6 bg-white p-4 rounded-xl shadow-md flex flex-wrap gap-4">
+        <form method="GET" action="/products" class="mb-6 bg-white p-4 rounded-xl shadow-md flex flex-wrap gap-4">
             {{-- Search --}}
             <div class="flex-1 min-w-[200px]">
                 <input type="text" name="search" value="{{ request('search') }}"
@@ -50,8 +50,12 @@
             <div class="flex-1 min-w-[150px]">
                 <select name="sort" class="w-full border border-gray-300 rounded-lg px-3 py-2">
                     <option value="">Sort By</option>
-                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
-                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
+                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price: Low to
+                        High
+                    </option>
+                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price: High to
+                        Low
+                    </option>
                     <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest</option>
                 </select>
             </div>
@@ -67,13 +71,13 @@
         {{-- Add Product Button (Managers Only) --}}
         @can('create', App\Models\Product::class)
             <div class="mb-6 flex justify-end">
-                <a href="{{ route('products.create') }}"
+                <a href="/manager/products/create"
                    class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
                     ➕ Add Product
                 </a>
             </div>
         @endcan
-         Products List
+        Products List
         @if($products->isEmpty())
             <div class="bg-yellow-100 text-yellow-800 p-4 rounded-lg">
                 No products available.
@@ -81,10 +85,12 @@
         @else
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @foreach($products as $product)
-                    <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-transform transform hover:-translate-y-1 overflow-hidden">
+                    <div
+                        class="bg-white rounded-xl shadow-md hover:shadow-xl transition-transform transform hover:-translate-y-1 overflow-hidden">
                         <div class="p-4 flex flex-col justify-between h-full">
                             {{-- Product Name --}}
-                            <h2 class="text-md font-semibold text-gray-900 mb-1 truncate" title="{{ $product['name'] }}">
+                            <h2 class="text-md font-semibold text-gray-900 mb-1 truncate"
+                                title="{{ $product['name'] }}">
                                 {{ $product['name'] }}
                             </h2>
 
@@ -95,7 +101,12 @@
 
                             {{-- Price & Stock --}}
                             <div class="flex items-center justify-between mb-3">
-                                <span class="text-lg font-bold text-teal-600">Rs {{ number_format($product['price'], 2) }}</span>
+                                <div class="flex flex-col items-left">
+                                    <div class="text-lg font-bold text-teal-600">Rs {{ number_format($product['price'], 2) }}
+                                </div>
+                                    <div
+                                        class="px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800">Discount {{number_format(($product->discount * 100)/$product->price,2)   }}%</div>
+                                </div>
                                 <span class="px-2 py-0.5 rounded-full text-xs font-semibold
                          {{ $product['stock'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                 {{ $product['stock'] ? "In stock" : "Out of stock" }}
@@ -109,20 +120,20 @@
 
                             {{-- Actions --}}
                             <div class="flex gap-2 mt-2">
-                                <a href="{{ route('products.show', $product['id']) }}"
+                                <a href="/products/{{$product['id']}}"
                                    class="flex-1 text-center bg-indigo-600 text-white py-1.5 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
                                     View
                                 </a>
 
                                 @can('update', App\Models\Product::class)
-                                    <a href="/products/{{$product->id}}/edit"
+                                    <a href="/manager/products/{{$product->id}}/edit"
                                        class="flex-1 text-center bg-yellow-500 text-white py-1.5 rounded-lg text-sm font-medium hover:bg-yellow-600 transition">
                                         Edit
                                     </a>
                                 @endcan
 
                                 @can('delete', App\Models\Product::class)
-                                    <form action="/products/{{$product->id}}" method="POST" class="flex-1">
+                                    <form action="manager/products/{{$product->id}}" method="POST" class="flex-1">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"

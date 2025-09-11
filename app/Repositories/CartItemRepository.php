@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CartItemRepository
 {
@@ -17,16 +18,17 @@ class CartItemRepository
     {
         return CartItem::updateOrCreate(
             ['user_id' => $userId, 'product_id' => $product->id],
-            ['quantity' => $quantity,'price' => $product->price * $quantity],
+            ['quantity' => $quantity,'price' =>($product->price - $product->discount) * $quantity],
         );
     }
 
     public function updateItem($userId, $productId, $quantity)
     {
+
         $item = CartItem::where('user_id', $userId)->where('product_id', $productId)->first();
         if (!$item) return null;
-
-        $item->update(['quantity' => $quantity,'price'=> $item->product->price * $quantity]);
+        $product = Product::where('id', $productId)->first();
+        $item->update(['quantity' => $quantity,'price'=>  ($product->price - $product->discount) * $quantity]);
         return $item;
     }
 

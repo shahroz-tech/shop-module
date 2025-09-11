@@ -11,11 +11,16 @@ class OrderRepository
         return Order::create($data);
     }
 
+    public function getOrders(){
+        return Order::with('items.product','user')->latest()->paginate(10);
+    }
+
     public function findUserOrderById(int $userId)
     {
         return Order::with('items.product')
             ->where('user_id', $userId)
-            ->get();
+            ->latest()
+            ->paginate(10);
     }
 
     public function updateStatus(Order $order, string $status): Order
@@ -29,5 +34,22 @@ class OrderRepository
         return Order::findOrFail($id);
     }
 
+    public function totalOrders()
+    {
+        return Order::count();
+    }
+
+    public function totalRevenue()
+    {
+        return Order::sum('total_amount');
+    }
+
+    public function salesByUser()
+    {
+        return Order::selectRaw('user_id, SUM(total_amount) as revenue')
+            ->groupBy('user_id')
+            ->with('user')
+            ->get();
+    }
 
 }

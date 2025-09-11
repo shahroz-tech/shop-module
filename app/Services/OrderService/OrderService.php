@@ -4,6 +4,7 @@
 namespace App\Services\OrderService;
 
 use App\Models\CartItem;
+use App\Models\Order;
 use App\Models\Product;
 use App\Repositories\OrderRepository;
 use App\Services\StripeService\StripeService;
@@ -26,7 +27,8 @@ class OrderService
             // 1. Calculate total
             $total = collect($validated['items'])->sum(function ($item) {
                 $product = Product::findOrFail($item['product_id']);
-                return $item['quantity'] * $product->price;
+                $productPrice = $product->price-$product->discount;
+                return $item['quantity'] *$productPrice;
             });
 
             // 2. Create Order
@@ -43,7 +45,7 @@ class OrderService
                     'product_id' => $product->id,
                     'quantity' => $item['quantity'],
                     'price' => $product->price,
-                    'subtotal' => $product->price * $item['quantity'],
+                    'subtotal' => ($product->price-$product->discount) * $item['quantity'],
                 ]);
             }
 
@@ -52,6 +54,10 @@ class OrderService
 
             return [$order->load('items.product')];
         });
+    }
+
+    public function getAllOrders(){
+        return $this->orderRepository->getOrders();
     }
 
     public function getUserOrder(int $userId)
@@ -74,4 +80,14 @@ class OrderService
         $order = $this->orderRepository->findOrderById($id);
         return $this->orderRepository->updateStatus($order, 'refunded');
     }
+
+    public function updateStatusApproved(Order $order){
+        return $order->update(['status' => 'approved']);
+    }
+
+    public function updateStatusRejected(Order $order){
+        return $order->update(['status' => 'rejected']);
+    }
+
+
 }

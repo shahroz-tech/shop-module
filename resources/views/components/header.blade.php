@@ -42,28 +42,35 @@
                         </a>
                     </li>
 
-
-                        @if(auth()->check() && auth()->user()->profile->role === 'manager')
+                    {{-- Admin --}}
+                    @if(auth()->check() && auth()->user()->profile->role === 'admin')
+                        <li>
+                            <a href="{{ route('admin.dashboard') }}"
+                               class="block bg-gray-800 text-white px-3 py-1 rounded-sm hover:bg-gray-900 transition">
+                                Admin Dashboard
+                            </a>
+                        </li>
+                    @elseif(auth()->check() && auth()->user()->profile->role === 'manager')
                         <li>
                             <a href="/manager/orders"
                                class="block text-gray-700 hover:text-indigo-600 px-3 py-1 rounded-sm transition">
                                 Manage Orders
                             </a>
                         </li>
-                    <li>
-                                <a href="{{ route('manager.refunds.index') }}"
-                                   class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow">
-                                    Refund Requests
-                                </a>
-                    </li>
-                        @else
+                        <li>
+                            <a href="{{ route('manager.refunds.index') }}"
+                               class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow">
+                                Refund Requests
+                            </a>
+                        </li>
+                    @else
+                        <li>
                             <a href="/orders"
                                class="block text-gray-700 hover:text-indigo-600 px-3 py-1 rounded-sm transition">
                                 Orders
                             </a>
-                        @endif
-
-
+                        </li>
+                    @endif
                     {{-- Cart --}}
                     <li>
                         <a href="/cart" class="relative flex items-center text-gray-700 hover:text-indigo-600 transition">

@@ -69,6 +69,7 @@
                                     <th class="p-3 text-sm font-medium text-gray-600">Product</th>
                                     <th class="p-3 text-sm font-medium text-center text-gray-600">Quantity</th>
                                     <th class="p-3 text-sm font-medium text-center text-gray-600">Price</th>
+                                    <th class="p-3 text-sm font-medium text-center text-gray-600">Discount</th>
                                     <th class="p-3 text-sm font-medium text-center text-gray-600">Subtotal</th>
                                 </tr>
                                 </thead>
@@ -78,6 +79,8 @@
                                         <td class="p-3 text-gray-700">{{ $item->product->name ?? 'Product deleted' }}</td>
                                         <td class="p-3 text-center">{{ $item->quantity }}</td>
                                         <td class="p-3 text-center">Rs. {{ number_format($item->price, 2) }}</td>
+                                        <td class="p-2 text-center">{{$item->product->discount}}%</td>
+
                                         <td class="p-3 text-center font-semibold">Rs. {{ number_format($item->price * $item->quantity, 2) }}</td>
                                     </tr>
                                 @endforeach

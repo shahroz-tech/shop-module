@@ -24,6 +24,6 @@ class ReviewController extends Controller
         $review = $this->reviewService->store($request->validated());
 
 
-        return back()->with('success', 'Review added successfully!');
+        return back()->with('success_review', 'Review added successfully!');
     }
 }

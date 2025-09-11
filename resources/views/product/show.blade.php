@@ -32,6 +32,8 @@
                     </p>
 
                     <p class="mt-3">
+                    <span
+                        class="px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800">Discount {{number_format(($product->discount * 100)/$product->price,2)   }}%</span>
                     <span class="px-3 py-1 rounded-full text-xs font-medium
                         {{ $product['stock'] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
                         {{ $product['stock'] ? "In Stock" : "Out of Stock" }}
@@ -69,6 +71,16 @@
             <!-- Right: Reviews -->
             <div class="lg:col-span-2">
                 <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm h-[75vh] overflow-y-auto">
+                    @if(session('success_review'))
+                        <div class="mb-6 rounded-md bg-green-100 border border-green-300 text-green-800 px-4 py-3 flex items-center justify-between">
+                            <span>{{ session('success_review') }}</span>
+                                <button type="button"
+                                        onclick="this.parentElement.parentElement.remove()"
+                                        class="text-green-700 hover:text-green-900 font-bold">
+                                    ✕
+                                </button>
+                        </div>
+                    @endif
                     <h2 class="text-xl font-semibold text-gray-900 mb-4">Customer Reviews</h2>
 
                     @if($product->reviews->count() > 0)

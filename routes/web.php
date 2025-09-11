@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminController\AdminController;
 use App\Http\Controllers\AuthController\AuthController;
 use App\Http\Controllers\CartItemController\CartItemController;
 use App\Http\Controllers\Manager\OrderController\OrderController as ManagerOrderController;
+use App\Http\Controllers\Manager\ProductController\ProductController as ManagerProductController;
 use App\Http\Controllers\OrderController\OrderController;
 use App\Http\Controllers\ProductController\ProductController;
 use App\Http\Controllers\RefundRequestController\RefundRequestController;
@@ -33,7 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
     // Products
-    Route::resource('products', ProductController::class);
+    Route::resource('products', ProductController::class)->only(['index', 'show']);
+    //Manager product controller
+    Route::resource('manager/products', ManagerProductController::class);
 
     // Cart
     Route::controller(CartItemController::class)->group(function () {
@@ -66,6 +70,12 @@ Route::middleware('auth')->group(function () {
         // Manager Refund Requests
         Route::get('/refunds', [RefundRequestController::class, 'index'])->name('refunds.index');
         Route::post('/refunds/{id}/approve', [RefundRequestController::class, 'approve'])->name('refunds.approve');
+    });
+
+    Route::middleware( 'isAdmin')->prefix('admin')->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+        Route::post('/users/{id}/role', [AdminController::class, 'assignRole'])->name('admin.assignRole');
     });
 
 

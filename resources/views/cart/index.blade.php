@@ -41,6 +41,7 @@
                     <tr>
                         <th class="p-4">Product</th>
                         <th class="p-4 text-center">Price</th>
+                        <th class="p-4 text-center">Discount</th>
                         <th class="p-4 text-center">Quantity</th>
                         <th class="p-4 text-center">Subtotal</th>
                         <th class="p-4 text-center">Actions</th>
@@ -53,6 +54,10 @@
                                 <span class="font-medium text-gray-700">{{ $item->product->name }}</span>
                             </td>
                             <td class="p-4 text-center text-gray-600">Rs. {{ number_format($item->product->price, 2) }}</td>
+
+                            <td class="p-4 flex items-center space-x-3">
+                                <span class="font-medium text-gray-700"> {{number_format(($item->product->discount * 100)/$item->product->price,2)   }}%</span>
+                            </td>
                             <td class="p-4 text-center">
                                 <form action="/cart/update/{{$item->product->id}}" method="POST" class="flex justify-center items-center space-x-2">
                                     @csrf
@@ -66,7 +71,7 @@
                                 </form>
                             </td>
                             <td class="p-4 text-center text-gray-700 font-semibold">
-                                Rs. {{ number_format($item->quantity * $item->product->price, 2) }}
+                                Rs. {{ number_format($item->price, 2) }}
                             </td>
                             <td class="p-4 text-center">
                                 <form action="/cart/remove/{{$item->product->id}}" method="POST">
@@ -95,7 +100,8 @@
                     </div>
                     <div class="text-right">
                         <p class="text-lg font-bold text-gray-800">
-                            Total: Rs. {{ number_format($cartItems->sum(fn($i) => $i->quantity * $i->product->price), 2) }}
+
+                            Total: Rs. {{ number_format($cartItems->sum(fn($i) => $i->price), 2) }}
                         </p>
 
                         <!-- Place Order Form -->
@@ -116,7 +122,7 @@
         @else
             <div class="bg-white p-8 rounded-lg shadow text-center">
                 <p class="text-gray-600 text-lg">Your cart is empty 🛍️</p>
-                <a href="{{ route('products.index') }}"
+                <a href="/products"
                    class="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
                     Continue Shopping
                 </a>

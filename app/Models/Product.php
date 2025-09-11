@@ -13,6 +13,7 @@ class Product extends Model
         'stock',
         'is_active',
         'category',
+        'discount'
     ];
 
     // A product can be in many users' carts

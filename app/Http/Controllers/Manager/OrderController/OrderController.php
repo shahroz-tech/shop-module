@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Manager\OrderController;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Services\OrderService\OrderService;
 use App\Services\StripeService\StripeService;
 
 class OrderController extends Controller
 {
-    public function __construct(protected StripeService $stripeService){}
+    public function __construct(protected StripeService $stripeService,protected OrderService $orderService){}
 
     public function index()
     {
-        $orders = Order::with('items.product','user')->latest()->paginate(10);
+        $orders = $this->orderService->getAllOrders();
         return view('manager.orders.index', compact('orders'));
     }
 
@@ -23,7 +24,7 @@ class OrderController extends Controller
             return back()->with('error', 'Only paid orders can be approved.');
         }
 
-        $order->update(['status' => 'approved']);
+        $this->orderService->updateStatusApproved($order);
         return back()->with('success', "Order #{$order->id} approved.");
     }
 
@@ -32,8 +33,9 @@ class OrderController extends Controller
         if (!in_array($order->status, ['pending', 'paid'])) {
             return back()->with('error', 'Only pending/paid orders can be rejected.');
         }
+        $this->orderService->updateStatusRejected($order);
 
-        $order->update(['status' => 'rejected']);
+
         return back()->with('success', "Order #{$order->id} rejected.");
     }
 

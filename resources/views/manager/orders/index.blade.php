@@ -18,19 +18,33 @@
         @if($orders->count() > 0)
             <div class="space-y-5">
                 @foreach($orders as $order)
-                    <div class="bg-white shadow rounded-lg p-6">
-                        <div class="flex justify-between items-center">
+                    <div x-data="{ open: false }" class="bg-white shadow rounded-lg">
+                        <!-- Header -->
+                        <div class="flex justify-between items-center p-6 cursor-pointer" @click="open = !open">
                             <div>
                                 <p class="font-semibold text-lg text-gray-800">Order #{{ $order->id }}</p>
                                 <p class="text-sm text-gray-500">Customer: {{ $order->user->name }}</p>
                                 <p class="text-sm text-gray-500">Placed: {{ $order->created_at->format('d M Y, h:i A') }}</p>
                             </div>
                             <div class="flex items-center space-x-3">
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold
-                                {{ $order->status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                {{ ucfirst($order->status) }}
-                            </span>
-                                @if($order->status === 'paid')
+                <span class="px-3 py-1 rounded-full text-xs font-semibold
+                    {{ $order->status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                    {{ ucfirst($order->status) }}
+                </span>
+                                <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                                <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Collapsible Content -->
+                        <div x-show="open" x-collapse class="p-6 border-t">
+                            <!-- Actions -->
+                            @if($order->status === 'paid')
+                                <div class="flex gap-2 mb-4">
                                     <form action="{{ route('manager.orders.approve', $order->id) }}" method="POST">
                                         @csrf
                                         <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md text-sm">Approve</button>
@@ -39,18 +53,17 @@
                                         @csrf
                                         <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm">Reject</button>
                                     </form>
-                                @endif
-                            </div>
-                        </div>
+                                </div>
+                            @endif
 
-                        <!-- Items -->
-                        <div class="mt-4">
+                            <!-- Items Table -->
                             <table class="w-full text-sm border-collapse">
                                 <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-2 text-left">Product</th>
                                     <th class="p-2 text-center">Qty</th>
                                     <th class="p-2 text-center">Price</th>
+                                    <th class="p-2 text-center">Discount</th>
                                     <th class="p-2 text-center">Subtotal</th>
                                 </tr>
                                 </thead>
@@ -60,6 +73,7 @@
                                         <td class="p-2">{{ $item->product->name ?? 'Deleted product' }}</td>
                                         <td class="p-2 text-center">{{ $item->quantity }}</td>
                                         <td class="p-2 text-center">Rs. {{ number_format($item->price, 2) }}</td>
+                                        <td class="p-2 text-center">{{ $item->product->discount }}%</td>
                                         <td class="p-2 text-center font-semibold">Rs. {{ number_format($item->subtotal, 2) }}</td>
                                     </tr>
                                 @endforeach
@@ -68,6 +82,7 @@
                         </div>
                     </div>
                 @endforeach
+
             </div>
 
             <div class="mt-6">
@@ -79,4 +94,7 @@
             </div>
         @endif
     </div>
+
+    <script src="//unpkg.com/alpinejs" defer></script>
+
 @endsection
