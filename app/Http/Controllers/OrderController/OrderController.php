@@ -31,13 +31,6 @@ class OrderController extends Controller
         return view('order.index',['orders'=>OrderResource::collection($orders)]);
     }
 
-//    public function webhook(Request $request)
-//    {
-//        $this->orderService->handlePaymentWebhook($request->all());
-//
-//        return response()->json(['status' => 'success']);
-//    }
-
     public function pay($id)
     {
         $session = $this->stripeService->stripeCheckout($id);
@@ -47,41 +40,7 @@ class OrderController extends Controller
 
     public function success(Request $request)
     {
-        Stripe::setApiKey(config('services.stripe.secret'));
-
-        $sessionId = $request->get('session_id');
-
-        if (!$sessionId) {
-            return redirect()->route('orders.index')
-                ->with('error', '❌ Payment session not found.');
-        }
-
-        // Fetch session from Stripe
-        $session = Session::retrieve($sessionId);
-
-        if ($session->payment_status === 'paid') {
-            // Find order by metadata
-            $order = $this->orderService->findOrderById($session->metadata->order_id ?? null);
-
-            if ($order) {
-                $order->update(['status' => 'paid']);
-
-                // optional: update payment table
-                Payment::updateOrCreate(
-                    ['stripe_payment_intent_id' => $session->payment_intent],
-                    [
-                        'order_id' => $order->id,
-                        'status'   => 'succeeded',
-                    ]
-                );
-            }
-
-            return redirect()->route('orders.index')
-                ->with('success', '✅ Payment successful!');
-        }
-
-        return redirect()->route('orders.index')
-            ->with('error', '❌ Payment could not be verified.');
+        return $this->stripeService->success($request);
     }
 
     public function failed()

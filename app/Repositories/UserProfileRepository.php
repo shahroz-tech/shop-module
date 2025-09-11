@@ -7,7 +7,7 @@ use App\Models\UserProfile;
 
 class UserProfileRepository
 {
-    public function getByUser(User $user): UserProfile
+    public function getByUser(User $user)
     {
         return $user->profile()->firstOrCreate(['user_id' => $user->id]);
     }

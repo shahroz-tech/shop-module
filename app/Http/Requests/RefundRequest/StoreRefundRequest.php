@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\RefundRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserProfileRequest extends FormRequest
+class StoreRefundRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class UpdateUserProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'   => 'required|string|max:255',
-            'phone'  => 'nullable|string|max:20',
-            'address'=> 'nullable|string|max:255',
+            'order_id' => 'required|exists:orders,id',
+            'user_id' => 'required|exists:users,id',
+            'reason' => 'nullable|string',
         ];
     }
 }

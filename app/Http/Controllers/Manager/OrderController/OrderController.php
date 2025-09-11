@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Manager;
+namespace App\Http\Controllers\Manager\OrderController;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Services\StripeService\StripeService;
-use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -17,11 +16,6 @@ class OrderController extends Controller
         return view('manager.orders.index', compact('orders'));
     }
 
-    public function show(Order $order)
-    {
-        $order->load('items.product', 'user');
-        return view('manager.orders.show', compact('order'));
-    }
 
     public function approve(Order $order)
     {

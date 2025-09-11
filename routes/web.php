@@ -1,15 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController\AuthController;
-use App\Http\Controllers\ProductController\ProductController;
 use App\Http\Controllers\CartItemController\CartItemController;
+use App\Http\Controllers\Manager\OrderController\OrderController as ManagerOrderController;
 use App\Http\Controllers\OrderController\OrderController;
-use App\Http\Controllers\Manager\OrderController as ManagerOrderController;
-use App\Http\Controllers\RefundRequestController;
+use App\Http\Controllers\ProductController\ProductController;
+use App\Http\Controllers\RefundRequestController\RefundRequestController;
 use App\Http\Controllers\ReviewController\ReviewController;
 use App\Http\Controllers\UserProfileController\UserProfileController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => view('welcome'));
 

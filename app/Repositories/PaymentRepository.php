@@ -30,4 +30,9 @@ class PaymentRepository
         $payment->update(['status' => $status]);
         return $payment;
     }
+    public function updateOrCreatePayment(array $conditions, array $data): Payment
+    {
+        return Payment::updateOrCreate($conditions, $data);
+    }
+
 }
