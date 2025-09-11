@@ -13,13 +13,4 @@ class AuthRepository
         return User::create($data);
     }
 
-    public function findByEmail(string $email): ?User
-    {
-        return User::where('email', $email)->first();
-    }
-
-    public function deleteUserTokens(User $user): void
-    {
-        $user->tokens()->delete();
-    }
 }

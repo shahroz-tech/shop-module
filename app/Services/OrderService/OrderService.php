@@ -50,9 +50,6 @@ class OrderService
             // 4. Clear Cart
             CartItem::where('user_id', $userId)->delete();
 
-            // 5. Create Stripe Payment Intent
-//            $paymentIntent = $this->stripeService->createPaymentIntent($order);
-
             return [$order->load('items.product')];
         });
     }
@@ -68,25 +65,8 @@ class OrderService
         return $orders;
     }
 
-//    public function handlePaymentWebhook(array $payload)
-//    {
-//        return $this->stripeService->handleWebhook($payload);
-//    }
-
     public function findOrderById(int $id){
         return $this->orderRepository->findOrderById($id);
-    }
-
-    public function approve($id)
-    {
-        $order = $this->orderRepository->findOrderById($id);
-        return $this->orderRepository->updateStatus($order, 'approved');
-    }
-
-    public function reject($id)
-    {
-        $order = $this->orderRepository->findOrderById($id);
-        return $this->orderRepository->updateStatus($order, 'rejected');
     }
 
     public function markRefunded($id)
