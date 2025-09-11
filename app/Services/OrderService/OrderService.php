@@ -1,0 +1,97 @@
+<?php
+
+// app/Services/Order/OrderService.php
+namespace App\Services\OrderService;
+
+use App\Models\CartItem;
+use App\Models\Product;
+use App\Repositories\OrderRepository;
+use App\Services\StripeService\StripeService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use function Symfony\Component\Translation\t;
+
+class OrderService
+{
+    public function __construct(
+        protected OrderRepository $orderRepository,
+        protected StripeService   $stripeService
+    )
+    {
+    }
+
+    public function placeOrder(array $validated, int $userId)
+    {
+        return DB::transaction(function () use ($validated, $userId) {
+            // 1. Calculate total
+            $total = collect($validated['items'])->sum(function ($item) {
+                $product = Product::findOrFail($item['product_id']);
+                return $item['quantity'] * $product->price;
+            });
+
+            // 2. Create Order
+            $order = $this->orderRepository->create([
+                'user_id' => $userId,
+                'total_amount' => $total,
+                'status' => 'pending',
+            ]);
+
+            // 3. Create Order Items from Cart
+            foreach ($validated['items'] as $item) {
+                $product = Product::findOrFail($item['product_id']);
+                $order->items()->create([
+                    'product_id' => $product->id,
+                    'quantity' => $item['quantity'],
+                    'price' => $product->price,
+                    'subtotal' => $product->price * $item['quantity'],
+                ]);
+            }
+
+            // 4. Clear Cart
+            CartItem::where('user_id', $userId)->delete();
+
+            // 5. Create Stripe Payment Intent
+//            $paymentIntent = $this->stripeService->createPaymentIntent($order);
+
+            return [$order->load('items.product')];
+        });
+    }
+
+    public function getUserOrder(int $userId)
+    {
+        $orders = $this->orderRepository->findUserOrderById($userId);
+
+        if (!$orders) {
+            throw new ModelNotFoundException("Order not found");
+        }
+
+        return $orders;
+    }
+
+//    public function handlePaymentWebhook(array $payload)
+//    {
+//        return $this->stripeService->handleWebhook($payload);
+//    }
+
+    public function findOrderById(int $id){
+        return $this->orderRepository->findOrderById($id);
+    }
+
+    public function approve($id)
+    {
+        $order = $this->orderRepository->findOrderById($id);
+        return $this->orderRepository->updateStatus($order, 'approved');
+    }
+
+    public function reject($id)
+    {
+        $order = $this->orderRepository->findOrderById($id);
+        return $this->orderRepository->updateStatus($order, 'rejected');
+    }
+
+    public function markRefunded($id)
+    {
+        $order = $this->orderRepository->findOrderById($id);
+        return $this->orderRepository->updateStatus($order, 'refunded');
+    }
+}

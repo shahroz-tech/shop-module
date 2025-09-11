@@ -1,0 +1,52 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="max-w-xl mx-auto py-10">
+        @if(session('success'))
+            <div class="mb-6 rounded-md bg-green-100 border border-green-300 text-green-800 px-4 py-3 flex items-center justify-between">
+                <span>{{ session('success') }}</span>
+                <div class="flex items-center gap-3">
+                    <a href="{{ url('/products') }}"
+                       class="px-3 py-1.5 bg-green-600 text-white text-sm rounded hover:bg-green-700 shadow">
+                        Show Products
+                    </a>
+                    <button type="button"
+                            onclick="this.parentElement.parentElement.remove()"
+                            class="text-green-700 hover:text-green-900 font-bold">
+                        ✕
+                    </button>
+                </div>
+            </div>
+        @endif
+        <h1 class="text-2xl font-semibold mb-6">✏️ Edit Product</h1>
+
+        <form action="/products/{{$product->id}}" method="POST">
+            @csrf @method('PUT')
+            <div class="mb-4">
+                <label>Name</label>
+                <input type="text" name="name" class="w-full border rounded p-2" value="{{ $product->name }}">
+            </div>
+            <div class="mb-4">
+                <label>Price</label>
+                <input type="number" step="0.01" name="price" class="w-full border rounded p-2" value="{{ $product->price }}">
+            </div>
+            <div class="mb-4">
+                <label>Discount</label>
+                <input type="number" step="0.01" name="discount" class="w-full border rounded p-2" value="{{ $product->discount }}">
+            </div>
+            <div class="mb-4">
+                <label>Stock</label>
+                <input type="number" name="stock" class="w-full border rounded p-2" value="{{ $product->stock }}">
+            </div>
+            <div class="mb-4">
+                <label>Description</label>
+                <textarea name="description" class="w-full border rounded p-2">{{ $product->description }}</textarea>
+            </div>
+            <div class="mb-4">
+                <label>Category</label>
+                <input type="text" name="category" class="w-full border rounded p-2" value="{{ $product->category }}">
+            </div>
+            <button class="bg-green-600 text-white px-4 py-2 rounded-md">Update</button>
+        </form>
+    </div>
+@endsection
