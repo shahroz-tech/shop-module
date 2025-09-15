@@ -75,7 +75,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware( 'isAdmin')->prefix('admin')->group(function () {
-        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
         Route::post('/users/{id}/role', [AdminController::class, 'assignRole'])->name('admin.assignRole');
     });

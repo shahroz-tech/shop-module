@@ -33,4 +33,5 @@ class ReportService
 
         return compact('sales', 'topProducts', 'newCustomers', 'returningCustomers');
     }
+
 }

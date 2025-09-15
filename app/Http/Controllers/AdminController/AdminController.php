@@ -8,16 +8,18 @@ use App\Models\UserProfile;
 use App\Repositories\UserProfileRepository;
 use App\Repositories\UserRepository;
 use App\Services\AdminService\AdminService;
+use App\Services\ReportService;
 use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
-    public function __construct(protected AdminService $adminService, protected UserRepository $userRepository,protected UserProfileRepository $userProfileRepository) {}
+    public function __construct(protected AdminService $adminService, protected UserRepository $userRepository,protected UserProfileRepository $userProfileRepository, protected ReportService  $reportService) {}
 
-    public function dashboard()
+    public function index()
     {
-        $sales = $this->adminService->getSalesOverview();
-        return view('admin.dashboard', compact('sales'));
+        $reportData = $this->reportService->getReportData();
+
+        return view('admin.dashboard', compact('reportData'));
     }
 
     public function users()

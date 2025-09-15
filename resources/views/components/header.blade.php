@@ -53,7 +53,7 @@
                         </li>
                     @elseif(auth()->check() && auth()->user()->profile->role === 'manager')
                         <li>
-                            <a href="/manager/orders"
+                            <a href="{{ route('manager.reports.index') }}"
                                class="block text-gray-700 hover:text-indigo-600 px-3 py-1 rounded-sm transition">
                                 Manager Dashboard
                             </a>
