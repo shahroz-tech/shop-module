@@ -35,10 +35,11 @@
                 {{-- Authenticated Links --}}
                 @auth
                     {{-- Shop --}}
+
                     <li>
                         <a href="/products"
                            class="block bg-indigo-600 text-white px-3 py-1 rounded-sm hover:bg-indigo-700 transition">
-                            Shop Now
+                            {{auth()->user()->profile->role === 'customer'?'Shop now':'Products'}}
                         </a>
                     </li>
 
@@ -46,7 +47,7 @@
                     @if(auth()->check() && auth()->user()->profile->role === 'admin')
                         <li>
                             <a href="{{ route('admin.dashboard') }}"
-                               class="block bg-gray-800 text-white px-3 py-1 rounded-sm hover:bg-gray-900 transition">
+                               class="block text-gray-700 hover:text-indigo-600 px-3 py-1 rounded-sm transition">
                                 Admin Dashboard
                             </a>
                         </li>
@@ -54,13 +55,7 @@
                         <li>
                             <a href="/manager/orders"
                                class="block text-gray-700 hover:text-indigo-600 px-3 py-1 rounded-sm transition">
-                                Manage Orders
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('manager.refunds.index') }}"
-                               class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow">
-                                Refund Requests
+                                Manager Dashboard
                             </a>
                         </li>
                     @else

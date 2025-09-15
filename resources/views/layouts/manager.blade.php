@@ -10,10 +10,12 @@
 <body class="flex bg-gray-100">
 <!-- Sidebar -->
 <aside class="w-64 bg-gray-800 text-white min-h-screen p-4">
-    <h2 class="text-2xl font-bold mb-6">Admin Dashboard</h2>
+    <h2 class="text-2xl font-bold mb-6">Admin Panel</h2>
     <nav class="space-y-3">
-        <a href="{{ route('admin.dashboard') }}" class="block p-2 rounded hover:bg-gray-700">Dashboard</a>
-        <a href="{{ route('admin.users') }}" class="block p-2 rounded hover:bg-gray-700">Users</a>
+        <a href="{{ route('manager.reports.index') }}" class="block p-2 rounded hover:bg-gray-700">Dashboard</a>
+        <a href="{{ route('manager.inventory.index') }}" class="block p-2 rounded hover:bg-gray-700">Inventory</a>
+        <a href="/manager/orders" class="block p-2 rounded hover:bg-gray-700">  Manage Orders</a>
+        <a href="{{ route('manager.refunds.index') }}" class="block p-2 rounded hover:bg-gray-700"> Refund Requests</a>
         <a href="/products" class="block p-2 rounded hover:bg-gray-700">Products</a>
 
     </nav>

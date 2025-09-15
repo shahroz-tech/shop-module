@@ -3,8 +3,10 @@
 use App\Http\Controllers\AdminController\AdminController;
 use App\Http\Controllers\AuthController\AuthController;
 use App\Http\Controllers\CartItemController\CartItemController;
+use App\Http\Controllers\Manager\InventoryController\InventoryController;
 use App\Http\Controllers\Manager\OrderController\OrderController as ManagerOrderController;
 use App\Http\Controllers\Manager\ProductController\ProductController as ManagerProductController;
+use App\Http\Controllers\Manager\ReportController\ReportController;
 use App\Http\Controllers\OrderController\OrderController;
 use App\Http\Controllers\ProductController\ProductController;
 use App\Http\Controllers\RefundRequestController\RefundRequestController;
@@ -92,4 +94,12 @@ Route::middleware('auth')->group(function () {
     // ---------------- USER PROFILE ---------------- //
     Route::get('/profile', [UserProfileController::class, 'show'])->name('profile.show');
     Route::post('/profile', [UserProfileController::class, 'update'])->name('profile.update');
+
+    Route::middleware('isManager')->group(function () {
+        Route::get('manager/dashboard', [ReportController::class, 'index'])->name('manager.reports.index');
+    });
+
+    Route::middleware('isManager')->group(function () {
+        Route::get('manager/inventory', [InventoryController::class, 'index'])->name('manager.inventory.index');
+    });
 });

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use Carbon\Carbon;
 
 class UserRepository
 {
@@ -17,5 +18,9 @@ class UserRepository
         return User::with('profile')->findOrFail($id);
     }
 
+    public function getNewCustomersThisMonth()
+    {
+        return User::whereMonth('created_at', Carbon::now()->month)->count();
+    }
 
 }

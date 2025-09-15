@@ -7,6 +7,20 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductRepository
 {
+    public function getAll()
+    {
+        return Product::all();
+    }
+
+    public function getLowStock(int $threshold = 10)
+    {
+        return Product::where('stock', '<', $threshold)->get();
+    }
+
+    public function getOutOfStock()
+    {
+        return Product::where('stock', '=', 0)->get();
+    }
     public function query()
     {
         return Product::query();

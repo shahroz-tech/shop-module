@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Order;
+use Carbon\Carbon;
 
 class OrderRepository
 {
@@ -50,6 +51,20 @@ class OrderRepository
             ->groupBy('user_id')
             ->with('user')
             ->get();
+    }
+
+    public function getSalesSummary()
+    {
+        return Order::selectRaw('SUM(total_amount) as revenue, COUNT(*) as orders, AVG(total_amount) as avg_order')
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->first();
+    }
+
+    public function getUniqueCustomerCountThisMonth()
+    {
+        return Order::whereMonth('created_at', Carbon::now()->month)
+            ->distinct('user_id')
+            ->count();
     }
 
 }
