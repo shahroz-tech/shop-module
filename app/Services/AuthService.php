@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Services\AuthService;
+namespace App\Services;
 
-use App\Models\User;
 use App\Repositories\AuthRepository;
 use App\Repositories\UserProfileRepository;
 use Illuminate\Support\Facades\Auth;

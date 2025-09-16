@@ -32,10 +32,10 @@
                 <h2 class="text-lg font-semibold text-gray-700">🆕 New Customers (This Month)</h2>
                 <p class="text-2xl font-bold text-indigo-600">{{ $reportData['newCustomers'] ?? 0 }}</p>
             </div>
-            <div class="bg-white shadow rounded-lg p-6">
-                <h2 class="text-lg font-semibold text-gray-700">🔁 Returning Customers</h2>
-                <p class="text-2xl font-bold text-pink-600">{{ $reportData['returningCustomers'] ?? 0 }}</p>
-            </div>
+{{--            <div class="bg-white shadow rounded-lg p-6">--}}
+{{--                <h2 class="text-lg font-semibold text-gray-700">🔁 Returning Customers</h2>--}}
+{{--                <p class="text-2xl font-bold text-pink-600">{{ $reportData['returningCustomers'] ?? 0 }}</p>--}}
+{{--            </div>--}}
         </div>
 
         <!-- Top Products -->

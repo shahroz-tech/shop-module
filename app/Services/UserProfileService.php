@@ -1,6 +1,6 @@
 <?php
 // app/Services/UserProfileService.php
-namespace App\Services\UserProfileService;
+namespace App\Services;
 
 use App\Models\User;
 use App\Repositories\UserProfileRepository;

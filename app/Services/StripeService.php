@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Services\StripeService;
+namespace App\Services;
 
 use App\Repositories\OrderRepository;
 use App\Repositories\PaymentRepository;
-use App\Services\PaymentService\PaymentService;
 use Illuminate\Http\Request;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;

@@ -5,8 +5,7 @@ namespace App\Http\Controllers\CartItemController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CartItemRequest\AddToCartRequest;
 use App\Http\Requests\CartItemRequest\UpdateCartRequest;
-use App\Http\Resources\CartItemResource;
-use App\Services\CartItemService\CartItemService;
+use App\Services\CartItemService;
 
 class CartItemController extends Controller
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\CartItemService;
+namespace App\Services;
 
 use App\Repositories\CartItemRepository;
 use App\Repositories\ProductRepository;

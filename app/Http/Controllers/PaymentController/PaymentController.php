@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\PaymentController;
 
 use App\Http\Controllers\Controller;
-use App\Services\PaymentService\PaymentService;
+use App\Services\PaymentService;
 
 class PaymentController extends Controller
 {

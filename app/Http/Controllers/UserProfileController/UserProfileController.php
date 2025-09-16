@@ -5,7 +5,7 @@ namespace App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserProfileRequest\UpdateUserProfileRequest;
 use App\Http\Resources\UserProfileResource;
-use App\Services\UserProfileService\UserProfileService;
+use App\Services\UserProfileService;
 use Illuminate\Support\Facades\Auth;
 
 class UserProfileController extends Controller

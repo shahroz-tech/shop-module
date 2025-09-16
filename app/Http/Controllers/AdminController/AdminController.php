@@ -4,12 +4,10 @@ namespace App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest\AssignRoleRequest;
-use App\Models\UserProfile;
 use App\Repositories\UserProfileRepository;
 use App\Repositories\UserRepository;
-use App\Services\AdminService\AdminService;
+use App\Services\AdminService;
 use App\Services\ReportService;
-use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {

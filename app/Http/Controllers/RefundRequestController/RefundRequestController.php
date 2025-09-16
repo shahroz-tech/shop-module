@@ -4,8 +4,7 @@ namespace App\Http\Controllers\RefundRequestController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RefundRequest\StoreRefundRequest;
-use App\Services\RefundService\RefundService;
-use Illuminate\Http\Request;
+use App\Services\RefundService;
 
 class RefundRequestController extends Controller
 {

@@ -156,5 +156,6 @@
                 {{ $products->withQueryString()->links() }}
             </div>
         @endif
+
     </div>
 @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.manager')
+@extends('layouts.app')
 
 @section('content')
     <div class="max-w-xl mx-auto py-10">
@@ -24,19 +24,19 @@
             @csrf
             <div class="mb-4">
                 <label>Name</label>
-                <input type="text" name="name" class="w-full border rounded p-2">
+                <input required type="text" name="name" class="w-full border rounded p-2">
             </div>
             <div class="mb-4">
                 <label>Price</label>
-                <input type="number" step="0.01" name="price" class="w-full border rounded p-2">
+                <input required type="number" step="0.01" name="price" class="w-full border rounded p-2">
             </div>
             <div class="mb-4">
                 <label>Discount</label>
-                <input type="number" step="0.01" name="discount" class="w-full border rounded p-2">
+                <input required type="number" step="0.01" name="discount" class="w-full border rounded p-2">
             </div>
             <div class="mb-4">
                 <label>Stock</label>
-                <input type="number" name="stock" class="w-full border rounded p-2">
+                <input required type="number" name="stock" class="w-full border rounded p-2">
             </div>
             <div class="mb-4">
                 <label>Description</label>
@@ -44,7 +44,7 @@
             </div>
             <div class="mb-4">
                 <label>Category</label>
-                <input type="text" name="category" class="w-full border rounded p-2">
+                <input required type="text" name="category" class="w-full border rounded p-2">
             </div>
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md">Save</button>
         </form>

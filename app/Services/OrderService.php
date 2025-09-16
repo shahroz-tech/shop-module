@@ -1,15 +1,17 @@
 <?php
 
 // app/Services/Order/OrderService.php
-namespace App\Services\OrderService;
+namespace App\Services;
 
+use App\Mail\OrderPlacedMail;
+use App\Mail\OrderRefundedMail;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\Product;
 use App\Repositories\OrderRepository;
-use App\Services\StripeService\StripeService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrderService
 {
@@ -26,8 +28,8 @@ class OrderService
             // 1. Calculate total
             $total = collect($validated['items'])->sum(function ($item) {
                 $product = Product::findOrFail($item['product_id']);
-                $productPrice = $product->price-$product->discount;
-                return $item['quantity'] *$productPrice;
+                $productPrice = $product->price - $product->discount;
+                return $item['quantity'] * $productPrice;
             });
 
             // 2. Create Order
@@ -44,18 +46,20 @@ class OrderService
                     'product_id' => $product->id,
                     'quantity' => $item['quantity'],
                     'price' => $product->price,
-                    'subtotal' => ($product->price-$product->discount) * $item['quantity'],
+                    'subtotal' => ($product->price - $product->discount) * $item['quantity'],
                 ]);
             }
 
             // 4. Clear Cart
             CartItem::where('user_id', $userId)->delete();
+            Mail::to($order->user->email)->queue(new OrderPlacedMail($order));
 
             return [$order->load('items.product')];
         });
     }
 
-    public function getAllOrders(){
+    public function getAllOrders()
+    {
         return $this->orderRepository->getOrders();
     }
 
@@ -70,21 +74,26 @@ class OrderService
         return $orders;
     }
 
-    public function findOrderById(int $id){
+    public function findOrderById(int $id)
+    {
         return $this->orderRepository->findOrderById($id);
     }
 
     public function markRefunded($id)
     {
         $order = $this->orderRepository->findOrderById($id);
+        Mail::to($order->user->email)->queue(new OrderRefundedMail($order));
+
         return $this->orderRepository->updateStatus($order, 'refunded');
     }
 
-    public function updateStatusApproved(Order $order){
+    public function updateStatusApproved(Order $order)
+    {
         return $order->update(['status' => 'approved']);
     }
 
-    public function updateStatusRejected(Order $order){
+    public function updateStatusRejected(Order $order)
+    {
         return $order->update(['status' => 'rejected']);
     }
 

@@ -99,6 +99,26 @@
                 </a>
             </div>
         @endif
+        @if($orders->count() > 0)
+            <div class="space-y-5">
+                @foreach($orders as $order)
+                    <!-- order card here -->
+                @endforeach
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-8">
+                {{ $orders->links() }}
+            </div>
+        @else
+            <div class="bg-white p-8 rounded-xl shadow-lg text-center">
+                <p class="text-gray-600 text-lg mb-4">You don’t have any orders yet 🛍️</p>
+                <a href="{{ route('products.index') }}"
+                   class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-sm transition">
+                    Start Shopping
+                </a>
+            </div>
+        @endif
     </div>
 
     <!-- Alpine.js -->

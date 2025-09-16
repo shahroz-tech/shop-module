@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Manager\OrderController;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Services\OrderService\OrderService;
-use App\Services\StripeService\StripeService;
+use App\Services\OrderService;
+use App\Services\StripeService;
 
 class OrderController extends Controller
 {

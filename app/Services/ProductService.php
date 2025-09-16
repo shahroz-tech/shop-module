@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\ProductService;
+namespace App\Services;
 
 use App\Models\Product;
 use App\Repositories\ProductRepository;
@@ -77,5 +77,9 @@ class ProductService
     public function destroy(Product $product): bool
     {
         return $this->productRepository->delete($product);
+    }
+
+    public function getProductCategories(){
+        return $this->productRepository->getProductCategories();
     }
 }

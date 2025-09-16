@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\ReviewService;
+namespace App\Services;
 
 use App\Repositories\ReviewRepository;
 

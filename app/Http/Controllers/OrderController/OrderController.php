@@ -5,14 +5,9 @@ namespace App\Http\Controllers\OrderController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest\PlaceOrderRequest;
 use App\Http\Resources\OrderResource;
-use App\Models\Order;
-use App\Models\Payment;
-use App\Services\OrderService\OrderService;
-use App\Services\StripeService\StripeService;
+use App\Services\OrderService;
+use App\Services\StripeService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Stripe\Checkout\Session;
-use Stripe\Stripe;
 
 class OrderController extends Controller
 {

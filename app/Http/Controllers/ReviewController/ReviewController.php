@@ -5,7 +5,7 @@ namespace App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReviewRequest\AddReviewRequest;
 use App\Http\Resources\ReviewResource;
-use App\Services\ReviewService\ReviewService;
+use App\Services\ReviewService;
 
 class ReviewController extends Controller
 {

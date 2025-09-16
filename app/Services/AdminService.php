@@ -1,10 +1,10 @@
 <?php
 // app/Services/AdminService.php
-namespace App\Services\AdminService;
+namespace App\Services;
 
-use App\Repositories\UserRepository;
 use App\Repositories\OrderRepository;
 use App\Repositories\PaymentRepository;
+use App\Repositories\UserRepository;
 
 class AdminService
 {

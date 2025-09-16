@@ -55,4 +55,9 @@ class ProductRepository
     {
         return Product::with(['reviews.user'])->findOrFail($id);
     }
+
+    public function getProductCategories(){
+        return Product::query()->distinct()->pluck('category');
+
+    }
 }
