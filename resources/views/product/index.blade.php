@@ -77,7 +77,6 @@
                 </a>
             </div>
         @endcan
-        Products List
         @if($products->isEmpty())
             <div class="bg-yellow-100 text-yellow-800 p-4 rounded-lg">
                 No products available.

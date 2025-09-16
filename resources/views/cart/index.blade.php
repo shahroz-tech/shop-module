@@ -62,13 +62,19 @@
                                 <form action="/cart/update/{{$item->product->id}}" method="POST" class="flex justify-center items-center space-x-2">
                                     @csrf
                                     @method('PUT')
-                                    <input type="number" name="quantity" value="{{ $item->quantity }}"
-                                           min="1" class="w-16 border rounded-md text-center">
+                                    <input type="number"
+                                           required
+                                           name="quantity"
+                                           value="{{ $item->quantity }}"
+                                           min="1"
+                                           max="{{ $item->product->stock }}" {{-- 🚀 Prevent quantity > stock --}}
+                                           class="w-16 border rounded-md text-center">
                                     <button type="submit"
                                             class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm">
                                         Update
                                     </button>
                                 </form>
+                                <p class="text-xs text-gray-500 mt-1">Available: {{ $item->product->stock }}</p>
                             </td>
                             <td class="p-4 text-center text-gray-700 font-semibold">
                                 Rs. {{ number_format($item->price, 2) }}

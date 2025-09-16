@@ -8,16 +8,21 @@ use App\Mail\OrderRefundedMail;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\Product;
+use App\Repositories\OrderItemRepository;
 use App\Repositories\OrderRepository;
+use App\Repositories\ProductRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class OrderService
 {
     public function __construct(
         protected OrderRepository $orderRepository,
-        protected StripeService   $stripeService
+        protected StripeService   $stripeService,
+        protected ProductRepository $productRepository,
     )
     {
     }
@@ -25,39 +30,34 @@ class OrderService
     public function placeOrder(array $validated, int $userId)
     {
         return DB::transaction(function () use ($validated, $userId) {
+            Session::put('cart_count', 0);
+
             // 1. Calculate total
-            $total = collect($validated['items'])->sum(function ($item) {
-                $product = Product::findOrFail($item['product_id']);
-                $productPrice = $product->price - $product->discount;
-                return $item['quantity'] * $productPrice;
-            });
+            $total = $this->orderRepository->calculateTotal($validated['items']);
 
             // 2. Create Order
             $order = $this->orderRepository->create([
-                'user_id' => $userId,
+                'user_id'      => $userId,
                 'total_amount' => $total,
-                'status' => 'pending',
+                'status'       => 'pending',
             ]);
 
-            // 3. Create Order Items from Cart
+            // 3. Create Order Items
             foreach ($validated['items'] as $item) {
-                $product = Product::findOrFail($item['product_id']);
-                $order->items()->create([
-                    'product_id' => $product->id,
-                    'quantity' => $item['quantity'],
-                    'price' => $product->price,
-                    'subtotal' => ($product->price - $product->discount) * $item['quantity'],
-                ]);
+
+
+                $this->orderRepository->createOrderItem($order, $item);
             }
 
             // 4. Clear Cart
-            CartItem::where('user_id', $userId)->delete();
+            $this->orderRepository->clearCart($userId);
+
+            // 5. Send Confirmation Email
             Mail::to($order->user->email)->queue(new OrderPlacedMail($order));
 
-            return [$order->load('items.product')];
+            return $order->load('items.product');
         });
     }
-
     public function getAllOrders()
     {
         return $this->orderRepository->getOrders();

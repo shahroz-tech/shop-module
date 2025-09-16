@@ -60,4 +60,5 @@ class ProductRepository
         return Product::query()->distinct()->pluck('category');
 
     }
+    
 }

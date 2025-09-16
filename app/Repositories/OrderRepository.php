@@ -1,8 +1,11 @@
 <?php
 namespace App\Repositories;
 
+use App\Models\CartItem;
 use App\Models\Order;
+use App\Models\Product;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class OrderRepository
 {
@@ -65,5 +68,28 @@ class OrderRepository
             ->distinct('user_id')
             ->count();
     }
+    public function createOrderItem(Order $order, array $item): void
+    {
+        $product = Product::findOrFail($item['product_id']);
+        $product->update(['stock'=>$product->stock -  $item['quantity']]);
+        $order->items()->create([
+            'product_id' => $product->id,
+            'quantity'   => $item['quantity'],
+            'price'      => $product->price,
+            'subtotal'   => ($product->price - $product->discount) * $item['quantity'],
+        ]);
+    }
 
+    public function calculateTotal(array $items): float
+    {
+        return collect($items)->sum(function ($item) {
+            $product = Product::findOrFail($item['product_id']);
+            return $item['quantity'] * ($product->price - $product->discount);
+        });
+    }
+
+    public function clearCart(int $userId): void
+    {
+        CartItem::where('user_id', $userId)->delete();
+    }
 }

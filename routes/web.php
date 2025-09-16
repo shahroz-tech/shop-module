@@ -65,16 +65,22 @@ Route::middleware('auth')->group(function () {
     Route::prefix('manager')->name('manager.')->middleware('isManager')->group(function () {
         // Manager Orders
         Route::resource('orders', ManagerOrderController::class)->only(['index', 'show']);
-        Route::post('orders/{order}/approve', [ManagerOrderController::class, 'approve'])->name('orders.approve');
-        Route::post('orders/{order}/reject', [ManagerOrderController::class, 'reject'])->name('orders.reject');
-        Route::post('orders/{order}/refund', [ManagerOrderController::class, 'refund'])->name('orders.refund');
+        Route::post('/orders/{order}/approve', [ManagerOrderController::class, 'approve'])->name('orders.approve');
+        Route::post('/orders/{order}/reject', [ManagerOrderController::class, 'reject'])->name('orders.reject');
+        Route::post('/orders/{order}/refund', [ManagerOrderController::class, 'refund'])->name('orders.refund');
 
         // Manager Refund Requests
         Route::get('/refunds', [RefundRequestController::class, 'index'])->name('refunds.index');
         Route::post('/refunds/{id}/approve', [RefundRequestController::class, 'approve'])->name('refunds.approve');
+
+        Route::get('/dashboard', [ReportController::class, 'index'])->name('reports.index');
+
+        Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+
+
     });
 
-    Route::middleware( 'isAdmin')->prefix('admin')->group(function () {
+    Route::middleware('isAdmin')->prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
         Route::post('/users/{id}/role', [AdminController::class, 'assignRole'])->name('admin.assignRole');
@@ -95,11 +101,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [UserProfileController::class, 'show'])->name('profile.show');
     Route::post('/profile', [UserProfileController::class, 'update'])->name('profile.update');
 
-    Route::middleware('isManager')->group(function () {
-        Route::get('manager/dashboard', [ReportController::class, 'index'])->name('manager.reports.index');
-    });
 
-    Route::middleware('isManager')->group(function () {
-        Route::get('manager/inventory', [InventoryController::class, 'index'])->name('manager.inventory.index');
-    });
 });
