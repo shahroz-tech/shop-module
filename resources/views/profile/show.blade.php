@@ -1,10 +1,11 @@
-{{-- resources/views/profile/show.blade.php --}}
 @extends('layouts.app')
+
+
 
 @section('content')
     <div class="max-w-3xl mx-auto py-10">
         <div class="flex gap-2 items-end">
-        <h1 class="text-2xl font-semibold mb-6">My Profile</h1>
+            <h1 class="text-2xl font-semibold mb-6">My Profile</h1>
             <span class="text-md font-semibold mb-6">({{$profile['role']}})</span>
         </div>
 
@@ -20,7 +21,8 @@
 
             <div>
                 <label class="block text-sm font-medium">Email (cannot edit)</label>
-                <input type="text" value="{{ $profile['user']['email']}}" disabled class="w-full border-gray-300 rounded mt-1">
+                <input type="text" value="{{ $profile['user']['email']}}" disabled
+                       class="w-full border-gray-300 rounded mt-1">
             </div>
 
             <div>

@@ -13,19 +13,7 @@ class AdminController extends Controller
 {
     public function __construct(protected AdminService $adminService, protected UserRepository $userRepository,protected UserProfileRepository $userProfileRepository, protected ReportService  $reportService) {}
 
-    public function index()
-    {
-        $reportData = $this->reportService->getReportData();
 
-        return view('admin.dashboard', compact('reportData'));
-    }
-
-    public function users()
-    {
-        $users = $this->adminService->getUsers();
-        $roles = ['customer', 'manager'];
-        return view('admin.users', compact('users','roles'));
-    }
 
     public function assignRole(AssignRoleRequest $request, $id)
     {

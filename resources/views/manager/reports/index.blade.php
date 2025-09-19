@@ -8,7 +8,7 @@
         <div class="grid grid-cols-3 gap-6 mb-8">
             <div class="bg-white shadow rounded-xl p-6">
                 <h2 class="text-lg font-semibold">Total Revenue</h2>
-                <p class="text-2xl font-bold text-green-600">${{ number_format($sales->revenue, 2) }}</p>
+                <p class="text-2xl font-bold text-green-600">PKR{{ number_format($sales->revenue, 2) }}</p>
             </div>
             <div class="bg-white shadow rounded-xl p-6">
                 <h2 class="text-lg font-semibold">Orders</h2>
@@ -16,7 +16,7 @@
             </div>
             <div class="bg-white shadow rounded-xl p-6">
                 <h2 class="text-lg font-semibold">Avg Order</h2>
-                <p class="text-2xl font-bold text-purple-600">${{ number_format($sales->avg_order, 2) }}</p>
+                <p class="text-2xl font-bold text-purple-600">PKR{{ number_format($sales->avg_order, 2) }}</p>
             </div>
         </div>
 
@@ -44,27 +44,27 @@
         </div>
 
         <!-- Customer Trends -->
-        <div class="bg-white shadow rounded-xl p-6">
-            <h2 class="text-xl font-semibold mb-4">👥 Customer Trends</h2>
-            <p>New Customers: <strong>{{ $newCustomers }}</strong></p>
-            <p>Returning Customers: <strong>{{ $returningCustomers }}</strong></p>
-            <canvas id="customerChart" class="mt-4"></canvas>
-        </div>
+{{--        <div class="bg-white shadow rounded-xl p-6 w-[50%]">--}}
+{{--            <h2 class="text-xl font-semibold mb-4">👥 Customer Trends</h2>--}}
+{{--            <p>New Customers: <strong>{{ $newCustomers }}</strong></p>--}}
+{{--            <p>Returning Customers: <strong>{{ $returningCustomers }}</strong></p>--}}
+{{--            <canvas id="customerChart" class="h-20 w-20 mt-4"></canvas>--}}
+{{--        </div>--}}
     </div>
 @endsection
 
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        new Chart(document.getElementById('customerChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['New', 'Returning'],
-                datasets: [{
-                    data: [{{ $newCustomers }}, {{ $returningCustomers }}],
-                    backgroundColor: ['#34d399', '#60a5fa']
-                }]
-            }
-        });
-    </script>
-@endpush
+{{--@push('scripts')--}}
+{{--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>--}}
+{{--    <script>--}}
+{{--        new Chart(document.getElementById('customerChart'), {--}}
+{{--            type: 'doughnut',--}}
+{{--            data: {--}}
+{{--                labels: ['New', 'Returning'],--}}
+{{--                datasets: [{--}}
+{{--                    data: [{{ $newCustomers }}, {{ $returningCustomers }}],--}}
+{{--                    backgroundColor: ['#34d399', '#60a5fa']--}}
+{{--                }]--}}
+{{--            }--}}
+{{--        });--}}
+{{--    </script>--}}
+{{--@endpush--}}

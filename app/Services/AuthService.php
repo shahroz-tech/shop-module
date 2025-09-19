@@ -32,7 +32,7 @@ class AuthService
         //creating profile
         $this->profileRepository->store([
             'user_id'=>Auth::id(),
-            'role' => 'customer',
+            'role' => $data['role'] ?? 'customer',
             'phone' => '',
             'address' => '',
         ]);

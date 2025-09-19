@@ -3,17 +3,19 @@
 use App\Http\Controllers\AdminController\AdminController;
 use App\Http\Controllers\AuthController\AuthController;
 use App\Http\Controllers\CartItemController\CartItemController;
-use App\Http\Controllers\Manager\InventoryController\InventoryController;
-use App\Http\Controllers\Manager\OrderController\OrderController as ManagerOrderController;
-use App\Http\Controllers\Manager\ProductController\ProductController as ManagerProductController;
-use App\Http\Controllers\Manager\ReportController\ReportController;
+use App\Http\Controllers\InventoryController\InventoryController;
 use App\Http\Controllers\OrderController\OrderController;
 use App\Http\Controllers\ProductController\ProductController;
 use App\Http\Controllers\RefundRequestController\RefundRequestController;
+use App\Http\Controllers\ReportController\ReportController;
 use App\Http\Controllers\ReviewController\ReviewController;
+use App\Http\Controllers\UserController\UserController;
 use App\Http\Controllers\UserProfileController\UserProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+//use App\Http\Controllers\Manager\OrderController\OrderController as ManagerOrderController;
+//use App\Http\Controllers\Manager\ProductController\ProductController as ManagerProductController;?
 
 Route::get('/', fn() => view('welcome'));
 
@@ -23,7 +25,7 @@ Route::get('/user', fn(Request $request) => $request->user())->middleware('auth:
 
 // ---------------- AUTH ROUTES ---------------- //
 Route::prefix('auth')->middleware('guest')->controller(AuthController::class)->group(function () {
-    Route::post('/register', 'register');
+    Route::post('/register', 'register')->name('register')  ;
     Route::get('/register', 'showRegister');
     Route::post('/login', 'login');
     Route::get('/login', 'showLogin')->name('login');
@@ -39,7 +41,7 @@ Route::middleware('auth')->group(function () {
     // Products
     Route::resource('products', ProductController::class)->only(['index', 'show']);
     //Manager product controller
-    Route::resource('manager/products', ManagerProductController::class);
+    Route::resource('manager/products', ProductController::class);
 
     // Cart
     Route::controller(CartItemController::class)->group(function () {
@@ -62,12 +64,12 @@ Route::middleware('auth')->group(function () {
 
 
     // ---------------- MANAGER ROUTES ---------------- //
-    Route::prefix('manager')->name('manager.')->middleware('isManager')->group(function () {
+    Route::middleware('isNotCustomer')->group(function () {
         // Manager Orders
-        Route::resource('orders', ManagerOrderController::class)->only(['index', 'show']);
-        Route::post('/orders/{order}/approve', [ManagerOrderController::class, 'approve'])->name('orders.approve');
-        Route::post('/orders/{order}/reject', [ManagerOrderController::class, 'reject'])->name('orders.reject');
-        Route::post('/orders/{order}/refund', [ManagerOrderController::class, 'refund'])->name('orders.refund');
+        Route::get('manage/orders', [OrderController::class,'getAllOrders'])->name('orders.allOrders');
+        Route::post('/orders/{order}/approve', [OrderController::class, 'approve'])->name('orders.approve');
+        Route::post('/orders/{order}/reject', [OrderController::class, 'reject'])->name('orders.reject');
+        Route::post('/orders/{order}/refund', [OrderController::class, 'refund'])->name('orders.refund');
 
         // Manager Refund Requests
         Route::get('/refunds', [RefundRequestController::class, 'index'])->name('refunds.index');
@@ -76,13 +78,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [ReportController::class, 'index'])->name('reports.index');
 
         Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+        Route::resource('users', UserController::class)->except(['edit', 'update','show']);
+
 
 
     });
 
     Route::middleware('isAdmin')->prefix('admin')->group(function () {
-        Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-        Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
         Route::post('/users/{id}/role', [AdminController::class, 'assignRole'])->name('admin.assignRole');
     });
 

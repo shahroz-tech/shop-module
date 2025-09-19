@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Manager\ReportController;
+namespace App\Http\Controllers\ReportController;
 
 use App\Http\Controllers\Controller;
 use App\Services\ReportService;

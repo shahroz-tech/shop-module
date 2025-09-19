@@ -62,12 +62,12 @@ class OrderRepository
             ->first();
     }
 
-    public function getUniqueCustomerCountThisMonth()
-    {
-        return Order::whereMonth('created_at', Carbon::now()->month)
-            ->distinct('user_id')
-            ->count();
-    }
+//    public function getUniqueCustomerCountThisMonth()
+//    {
+//        return Order::whereMonth('created_at', Carbon::now()->month)
+//            ->distinct('user_id')
+//            ->count();
+//    }
     public function createOrderItem(Order $order, array $item): void
     {
         $product = Product::findOrFail($item['product_id']);

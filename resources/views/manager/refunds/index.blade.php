@@ -30,7 +30,7 @@
                     <td class="border px-4 py-2">{{ ucfirst($refund->status) }}</td>
                     <td class="border px-4 py-2">
                         @if($refund->status === 'pending')
-                            <form action="{{ route('manager.refunds.approve',$refund->id)}}" method="POST">
+                            <form action="{{ route('refunds.approve',$refund->id)}}" method="POST">
                                 @csrf
                                 <button class="bg-green-600 text-white px-3 py-1 rounded-md">Approve Refund</button>
                             </form>

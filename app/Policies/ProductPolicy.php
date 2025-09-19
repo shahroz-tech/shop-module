@@ -30,7 +30,7 @@ class ProductPolicy
     public function create(User $user): bool
     {
 
-        return $user->profile->role === 'manager';
+        return $user->profile->role === 'manager'|| $user->profile->role === 'admin';
     }
 
     /**
@@ -38,7 +38,7 @@ class ProductPolicy
      */
     public function update(User $user): bool
     {
-        return $user->profile->role === 'manager';
+        return $user->profile->role === 'manager'||$user->profile->role === 'admin';
     }
 
     /**
@@ -46,7 +46,7 @@ class ProductPolicy
      */
     public function edit(User $user): bool
     {
-        return $user->profile->role === 'manager';
+        return $user->profile->role === 'manager'||$user->profile->role === 'admin';
     }
 
     /**
@@ -54,7 +54,7 @@ class ProductPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->profile->role === 'manager';
+        return $user->profile->role === 'manager'||$user->profile->role === 'admin';
     }
 
     /**

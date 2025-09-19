@@ -45,11 +45,11 @@
                             <!-- Actions -->
                             @if($order->status === 'paid')
                                 <div class="flex gap-2 mb-4">
-                                    <form action="{{ route('manager.orders.approve', $order->id) }}" method="POST">
+                                    <form action="{{ route('orders.approve', $order->id) }}" method="POST">
                                         @csrf
                                         <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md text-sm">Approve</button>
                                     </form>
-                                    <form action="{{ route('manager.orders.reject', $order->id) }}" method="POST">
+                                    <form action="{{ route('orders.reject', $order->id) }}" method="POST">
                                         @csrf
                                         <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm">Reject</button>
                                     </form>
