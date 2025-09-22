@@ -20,7 +20,7 @@
         @endif
         <h1 class="text-2xl font-semibold mb-6">✏️ Edit Product</h1>
 
-        <form action="/manager/products/{{$product->id}}" method="POST">
+        <form action="/products/{{$product->id}}" method="POST">
             @csrf @method('PUT')
             <div class="mb-4">
                 <label>Name</label>

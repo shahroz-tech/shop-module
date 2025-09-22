@@ -20,7 +20,7 @@
         @endif
         <h1 class="text-2xl font-semibold mb-6">➕ Add Product</h1>
 
-        <form action="/manager/products" method="POST">
+        <form action="/products" method="POST">
             @csrf
             <div class="mb-4">
                 <label>Name</label>

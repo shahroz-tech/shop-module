@@ -3,7 +3,6 @@
 @section('content')
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Products</h1>
-        {{-- Add Product Button (Managers Only) --}}
 
 
         {{-- Filters Form --}}
@@ -71,7 +70,7 @@
         {{-- Add Product Button (Managers Only) --}}
         @can('create', App\Models\Product::class)
             <div class="mb-6 flex justify-end">
-                <a href="/manager/products/create"
+                <a href="/products/create"
                    class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
                     ➕ Add Product
                 </a>
@@ -125,14 +124,14 @@
                                 </a>
 
                                 @can('update', App\Models\Product::class)
-                                    <a href="/manager/products/{{$product->id}}/edit"
+                                    <a href="/products/{{$product->id}}/edit"
                                        class="flex-1 text-center bg-yellow-500 text-white py-1.5 rounded-lg text-sm font-medium hover:bg-yellow-600 transition">
                                         Edit
                                     </a>
                                 @endcan
 
                                 @can('delete', App\Models\Product::class)
-                                    <form action="manager/products/{{$product->id}}" method="POST" class="flex-1">
+                                    <form action="/products/{{$product->id}}" method="POST" class="flex-1">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"

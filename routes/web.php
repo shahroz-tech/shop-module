@@ -14,9 +14,6 @@ use App\Http\Controllers\UserProfileController\UserProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-//use App\Http\Controllers\Manager\OrderController\OrderController as ManagerOrderController;
-//use App\Http\Controllers\Manager\ProductController\ProductController as ManagerProductController;?
-
 Route::get('/', fn() => view('welcome'));
 
 // Example: user check
@@ -39,9 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
     // Products
-    Route::resource('products', ProductController::class)->only(['index', 'show']);
-    //Manager product controller
-    Route::resource('manager/products', ProductController::class);
+    Route::resource('products', ProductController::class);
 
     // Cart
     Route::controller(CartItemController::class)->group(function () {
